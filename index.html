@@ -35,6 +35,7 @@
 
   let ctx,
       karte,
+      sound,
       stopper = 0,
       punkte = 0,
       anzStaedte = 20,
@@ -53,7 +54,7 @@
     ctx.textBaseline = 'middle'
 
     init()
-    setTimeout(draw, 400)
+    setTimeout(draw, 200)
   }
 
   document.addEventListener('mousedown', auswertung) 
@@ -63,7 +64,7 @@
     ctx.drawImage(karte, 23, 23)
     write(auswahl[aktStadt].name, 28, 39, 19, '#006', 'left')
     write(`Fehler: ${punkte} km`, 28, 60, 13, '#006', 'left')
-    write(`${aktStadt + 1}/${anzStaedte} Städte`, 28, 76, 13, '#006', 'left')
+    write(`${aktStadt + 1}/${anzStaedte} Städten`, 28, 76, 13, '#006', 'left')
 
     circle(versuch.x, versuch.y, 3, 'red')
 
@@ -90,11 +91,16 @@
     let x = e.clientX - offset.left   
     let y = e.clientY - offset.top
 
+    if (x <= 23 || x >= 420 || y <= 23 || y >= 495)
+      return
+
     if (loesung) {
       if (x > 339 && x < 417 && y > 451 && y < 490)
           naechsteRunde()
       return
     }
+
+    sound.play()
 
     loesung   = {x: auswahl[aktStadt].x + 23, y: auswahl[aktStadt].y + 23},
     versuch.x = x 
@@ -197,7 +203,10 @@
     staedte.push({name: 'Osnabrück',     x: 100, y: 170})
     staedte.push({name: 'Koblenz',       x:  81, y: 289})
     staedte.push({name: 'Regensburg',    x: 265, y: 368})
-    karte = new Image()
+
+    sound     = new Audio()
+    sound.src = 'sound.wav'
+    karte     = new Image()
     karte.src = 'deutschland.jpg'
 
     do {
