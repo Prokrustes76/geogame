@@ -54,7 +54,6 @@
     ctx.textBaseline = 'middle'
 
     init()
-    setTimeout(draw, 200)
   }
 
   document.addEventListener('mousedown', auswertung) 
@@ -208,6 +207,7 @@
     sound.src = 'sound.wav'
     karte     = new Image()
     karte.src = 'deutschland.jpg'
+    karte.onload = draw
 
     do {
       let zuf = Math.floor(Math.random() * staedte.length)
